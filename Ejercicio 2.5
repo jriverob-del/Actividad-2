@@ -1,0 +1,96 @@
+from enum import Enum
+
+class TipoCuenta(Enum):
+    AHORROS = "Ahorros"
+    CORRIENTE = "Corriente"
+
+class CuentaBancaria:
+    """
+    Modela una cuenta bancaria con titular, número, tipo y saldo.
+    El saldo inicial siempre es cero.
+    """
+    def __init__(self, nombres_titular, apellidos_titular, numero_cuenta, tipo_cuenta):
+        self.nombres_titular = nombres_titular
+        self.apellidos_titular = apellidos_titular
+        self.numero_cuenta = numero_cuenta
+        self.tipo_cuenta = tipo_cuenta
+        self.saldo = 0.0  
+    def imprimir(self):
+        """Imprime todos los atributos de la cuenta."""
+        print("\n--- DATOS DE LA CUENTA ---")
+        print(f"Titular: {self.nombres_titular} {self.apellidos_titular}")
+        print(f"Número de cuenta: {self.numero_cuenta}")
+        print(f"Tipo de cuenta: {self.tipo_cuenta.value}")
+        print(f"Saldo actual: ${self.saldo:,.2f}")
+        print("--------------------------")
+
+    def consultar_saldo(self):
+        """Muestra el saldo disponible."""
+        print(f"\nEl saldo actual de la cuenta es: ${self.saldo:,.2f}")
+
+    def consignar(self, valor):
+        """Añade saldo a la cuenta si el valor es positivo."""
+        if valor > 0:
+            self.saldo += valor
+            print(f"Consignación exitosa. Se han abonado ${valor:,.2f}")
+            return True
+        else:
+            print("Error: El valor a consignar debe ser mayor que cero.")
+            return False
+
+    def retirar(self, valor):
+        """Retira saldo si hay fondos suficientes y el valor es positivo."""
+        if valor <= 0:
+            print("Error: El valor a retirar debe ser mayor que cero.")
+            return False
+        
+        if valor <= self.saldo:
+            self.saldo -= valor
+            print(f"Retiro exitoso. Se han retirado ${valor:,.2f}")
+            return True
+        else:
+            print(f"Error: Saldo insuficiente. Intenta retirar menos de ${self.saldo:,.2f}")
+            return False
+
+def main():
+    print("=== REGISTRO DE CUENTA BANCARIA ===")
+    nombres = input("Nombres del titular: ")
+    apellidos = input("Apellidos del titular: ")
+    n_cuenta = input("Número de cuenta: ")
+    
+    print("\nSeleccione el tipo de cuenta:")
+    print("1. Ahorros")
+    print("2. Corriente")
+    opc_tipo = input("Elija (1 o 2): ")
+    t_cuenta = TipoCuenta.AHORROS if opc_tipo == "1" else TipoCuenta.CORRIENTE
+
+    mi_cuenta = CuentaBancaria(nombres, apellidos, n_cuenta, t_cuenta)
+    
+    while True:
+        print("\n--- MENÚ BANCARIO ---")
+        print("1. Consultar saldo")
+        print("2. Consignar dinero")
+        print("3. Retirar dinero")
+        print("4. Ver datos de la cuenta")
+        print("5. Salir")
+        
+        opcion = input("Elija una opción: ")
+
+        if opcion == "1":
+            mi_cuenta.consultar_saldo()
+        elif opcion == "2":
+            monto = float(input("Ingrese el monto a consignar: "))
+            mi_cuenta.consignar(monto)
+        elif opcion == "3":
+            monto = float(input("Ingrese el monto a retirar: "))
+            mi_cuenta.retirar(monto)
+        elif opcion == "4":
+            mi_cuenta.imprimir()
+        elif opcion == "5":
+            print("Gracias por usar el sistema bancario. ¡Adiós!")
+            break
+        else:
+            print("Opción no válida.")
+
+if __name__ == "__main__":
+    main()
