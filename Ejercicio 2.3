@@ -1,0 +1,127 @@
+from enum import Enum
+
+class TipoCombustible(Enum):
+    GASOLINA = "Gasolina"
+    BIOETANOL = "Bioetanol"
+    DIESEL = "Diésel"
+    BIODIESEL = "Biodiésel"
+    GAS_NATURAL = "Gas natural"
+
+class TipoAuto(Enum):
+    CIUDAD = "Carro de ciudad"
+    SUBCOMPACTO = "Subcompacto"
+    COMPACTO = "Compacto"
+    FAMILIAR = "Familiar"
+    EJECUTIVO = "Ejecutivo"
+    SUV = "SUV"
+
+class TipoColor(Enum):
+    BLANCO = "Blanco"
+    NEGRO = "Negro"
+    ROJO = "Rojo"
+    NARANJA = "Naranja"
+    AMARILLO = "Amarillo"
+    VERDE = "Verde"
+    AZUL = "Azul"
+    VIOLETA = "Violeta"
+
+class Automovil:
+    def __init__(self, marca, modelo, motor, tipo_combustible, tipo_auto, 
+                 numero_puertas, cantidad_asientos, velocidad_maxima, color):
+        self.marca = marca
+        self.modelo = modelo
+        self.motor = motor
+        self.tipo_combustible = tipo_combustible
+        self.tipo_auto = tipo_auto
+        self.numero_puertas = numero_puertas
+        self.cantidad_asientos = cantidad_asientos
+        self.velocidad_maxima = velocidad_maxima
+        self.color = color
+        self.velocidad_actual = 0  
+
+    def acelerar(self, incremento):
+        if self.velocidad_actual + incremento <= self.velocidad_maxima:
+            self.velocidad_actual += incremento
+            print(f"Acelerando... Velocidad actual: {self.velocidad_actual} km/h")
+        else:
+            print("No se puede incrementar a una velocidad superior a la máxima del automóvil.")
+
+    def desacelerar(self, decremento):
+        if self.velocidad_actual - decremento >= 0:
+            self.velocidad_actual -= decremento
+            print(f"Desacelerando... Velocidad actual: {self.velocidad_actual} km/h")
+        else:
+            print("No se puede decrementar a una velocidad negativa.")
+
+    def frenar(self):
+        self.velocidad_actual = 0
+        print("Frenazo total. Velocidad actual: 0 km/h")
+
+    def calcular_tiempo_llegada(self, distancia):
+        if self.velocidad_actual > 0:
+            return distancia / self.velocidad_actual
+        return float('inf') 
+
+    def imprimir(self):
+        print("\n" + "="*30)
+        print("   DATOS DEL AUTOMÓVIL")
+        print("="*30)
+        print(f"Marca: {self.marca}")
+        print(f"Modelo (Año): {self.modelo}")
+        print(f"Motor: {self.motor} litros")
+        print(f"Combustible: {self.tipo_combustible.value}")
+        print(f"Tipo de Auto: {self.tipo_auto.value}")
+        print(f"Puertas: {self.numero_puertas}")
+        print(f"Asientos: {self.cantidad_asientos}")
+        print(f"Velocidad Máxima: {self.velocidad_maxima} km/h")
+        print(f"Color: {self.color.value}")
+        print("="*30 + "\n")
+
+def menu_seleccion(clase_enum, titulo):
+    """Genera un menú dinámico para las enumeraciones"""
+    print(f"\nSeleccione {titulo}:")
+    opciones = list(clase_enum)
+    for i, opc in enumerate(opciones, 1):
+        print(f"{i}. {opc.value}")
+    
+    while True:
+        try:
+            res = int(input("Elija un número: "))
+            if 1 <= res <= len(opciones):
+                return opciones[res-1]
+            print("Opción no válida.")
+        except ValueError:
+            print("Entrada inválida. Ingrese un número.")
+
+if __name__ == "__main__":
+    print("--- REGISTRO DE AUTOMÓVIL ---")
+    
+    v_marca = input("Ingrese la marca: ")
+    v_modelo = int(input("Ingrese el modelo (año): "))
+    v_motor = float(input("Ingrese el cilindraje del motor (litros): "))
+    
+    v_combustible = menu_seleccion(TipoCombustible, "el tipo de combustible")
+    v_tipo_auto = menu_seleccion(TipoAuto, "el tipo de automóvil")
+    
+    v_puertas = int(input("\nIngrese el número de puertas: "))
+    v_asientos = int(input("Ingrese la cantidad de asientos: "))
+    v_vmax = int(input("Ingrese la velocidad máxima (km/h): "))
+    
+    v_color = menu_seleccion(TipoColor, "el color del automóvil")
+
+    mi_auto = Automovil(v_marca, v_modelo, v_motor, v_combustible, 
+                         v_tipo_auto, v_puertas, v_asientos, v_vmax, v_color)
+
+    mi_auto.imprimir()
+
+    print("--- INICIANDO PRUEBA DE RUTA ---")
+    
+    print("Seteando velocidad inicial a 100 km/h...")
+    mi_auto.velocidad_actual = 100
+    print(f"Velocidad actual = {mi_auto.velocidad_actual} km/h")
+    
+    mi_auto.acelerar(20)
+    
+    mi_auto.desacelerar(50)
+    
+    mi_auto.frenar()
