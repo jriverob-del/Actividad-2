@@ -1,0 +1,22 @@
+
+class Persona:
+  def __init__(self, nombre, apellido, numero_Documento, año_nacimiento):
+    self.nombre = nombre
+    self.apellido = apellido
+    self.numero_Documento = numero_Documento
+    self.año_nacimiento = año_nacimiento
+
+  def mostrar_datos(self):
+    print(f"Nombre: {self.nombre}")
+    print(f"Apellido: {self.apellido}")
+    print(f"Número de Documento: {self.numero_Documento}")
+    print(f"Año de Nacimiento: {self.año_nacimiento}")
+    print()
+
+nombre = input("Ingrese su nombre: ")
+apellido = input("Ingrese su apellido: ")
+numero_Documento = input("Ingrese su número de documento: ")
+año_nacimiento = input("Ingrese su año de nacimiento: ")
+
+Persona1 = Persona(nombre, apellido, numero_Documento, año_nacimiento)
+Persona1.mostrar_datos() 
