@@ -1,0 +1,82 @@
+from enum import Enum
+
+class TipoPlaneta(Enum):
+    GASEOSO = 1
+    TERRESTRE = 2
+    ENANO = 3
+
+class Planeta:
+    
+    
+    def __init__(self, nombre: str, cantidad_satelites: int, masa: float, 
+                 volumen: float, diametro: int, distancia_sol: int, 
+                 tipo: TipoPlaneta, es_observable: bool):
+        
+        self.nombre = nombre
+        self.cantidad_satelites = cantidad_satelites
+        self.masa = masa
+        self.volumen = volumen
+        self.diametro = diametro
+        self.distancia_sol = distancia_sol
+        self.tipo = tipo
+        self.es_observable = es_observable
+
+    def imprimir(self):
+        
+        print(f"Nombre del planeta = {self.nombre}")
+        print(f"Cantidad de satélites = {self.cantidad_satelites}")
+        print(f"Masa del planeta = {self.masa}")
+        print(f"Volumen del planeta = {self.volumen}")
+        print(f"Diámetro del planeta = {self.diametro}")
+        print(f"Distancia al sol = {self.distancia_sol}")
+        print(f"Tipo de planeta = {self.tipo.name}")
+        print(f"Es observable = {self.es_observable}")
+
+    def calcular_densidad(self) -> float:
+        
+        return self.masa / self.volumen
+
+    def es_planeta_exterior(self) -> bool:
+        
+        
+        limite = 149597870 * 3.4
+        
+        if self.distancia_sol > limite:
+            return True
+        else:
+            return False
+
+if __name__ == "__main__":
+    nombre = input("Ingrese el nombre del planeta: ")
+    cantidad_satelites = int(input("Ingrese la cantidad de satélites: "))
+    masa = float(input("Ingrese la masa del planeta (ej. 5.9736e24): "))
+    volumen = float(input("Ingrese el volumen del planeta (ej. 1.08321e12): "))
+    diametro = int(input("Ingrese el diámetro del planeta: "))
+    distancia_sol = int(input("Ingrese la distancia al sol (en Km): "))
+
+    print("Tipos de planeta: GASEOSO, TERRESTRE, ENANO")
+    tipo_str = input("Ingrese el tipo de planeta: ").upper()
+    try:
+        tipo = TipoPlaneta[tipo_str]
+    except KeyError:
+        print("Tipo de planeta inválido. Usando TERRESTRE por defecto.")
+        tipo = TipoPlaneta.TERRESTRE
+
+    es_observable_str = input("¿Es observable? (Si/No): ").lower()
+    es_observable = es_observable_str == 'si'
+
+    p_usuario = Planeta(
+        nombre=nombre,
+        cantidad_satelites=cantidad_satelites,
+        masa=masa,
+        volumen=volumen,
+        diametro=diametro,
+        distancia_sol=distancia_sol,
+        tipo=tipo,
+        es_observable=es_observable
+    )
+
+    print("\n--- Datos del planeta ingresado ---")
+    p_usuario.imprimir()
+    print(f"Densidad del planeta = {p_usuario.calcular_densidad()}")
+    print(f"Es planeta exterior = {p_usuario.es_planeta_exterior()}")
