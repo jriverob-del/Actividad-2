@@ -1,0 +1,96 @@
+import math
+class Circulo:
+    def __init__(self, radio):
+        self.radio = radio
+    def calcular_area(self):
+        return math.pi * math.pow(self.radio, 2)
+    def calcular_perimetro(self):
+        return 2 * math.pi * self.radio
+
+class Rectangulo:
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
+    def calcular_area(self):
+        return self.base * self.altura
+    def calcular_perimetro(self):
+        return (2 * self.base) + (2 * self.altura)
+
+class Cuadrado:
+    def __init__(self, lado):
+        self.lado = lado
+    def calcular_area(self):
+        return self.lado * self.lado
+    def calcular_perimetro(self):
+        return 4 * self.lado
+
+class TrianguloRectangulo:
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
+    def calcular_area(self):
+        return (self.base * self.altura) / 2
+    def calcular_hipotenusa(self):
+        return math.sqrt(self.base**2 + self.altura**2)
+    def calcular_perimetro(self):
+        return self.base + self.altura + self.calcular_hipotenusa()
+    def determinar_tipo_triangulo(self):
+        h = self.calcular_hipotenusa()
+        if self.base == self.altura == h:
+            return "Equilátero"
+        elif self.base != self.altura and self.base != h and self.altura != h:
+            return "Escaleno"
+        else:
+            return "Isósceles"
+def ejecutar_menu():
+    while True:
+        print("\n--- CALCULADORA DE FIGURAS GEOMÉTRICAS ---")
+        print("1. Círculo")
+        print("2. Rectángulo")
+        print("3. Cuadrado")
+        print("4. Triángulo Rectángulo")
+        print("5. Salir")
+        
+        opcion = input("Elija una opción (1-5): ")
+
+        if opcion == "5":
+            print("¡Hasta luego!")
+            break
+
+        try:
+            if opcion == "1":
+                r = float(input("Ingrese el radio del círculo (cm): "))
+                figura = Circulo(r)
+                print(f"Área: {figura.calcular_area():.2f}")
+                print(f"Perímetro: {figura.calcular_perimetro():.2f}")
+
+            elif opcion == "2":
+                b = float(input("Ingrese la base (cm): "))
+                h = float(input("Ingrese la altura (cm): "))
+                figura = Rectangulo(b, h)
+                print(f"Área: {figura.calcular_area():.2f}")
+                print(f"Perímetro: {figura.calcular_perimetro():.2f}")
+
+            elif opcion == "3":
+                l = float(input("Ingrese el lado del cuadrado (cm): "))
+                figura = Cuadrado(l)
+                print(f"Área: {figura.calcular_area():.2f}")
+                print(f"Perímetro: {figura.calcular_perimetro():.2f}")
+
+            elif opcion == "4":
+                b = float(input("Ingrese la base (cm): "))
+                h = float(input("Ingrese la altura (cm): "))
+                figura = TrianguloRectangulo(b, h)
+                print(f"Área: {figura.calcular_area():.2f}")
+                print(f"Hipotenusa: {figura.calcular_hipotenusa():.2f}")
+                print(f"Perímetro: {figura.calcular_perimetro():.2f}")
+                print(f"Tipo: {figura.determinar_tipo_triangulo()}")
+            
+            else:
+                print("Opción no válida, intente de nuevo.")
+
+        except ValueError:
+            print("Error: Por favor ingrese solo valores numéricos.")
+
+if __name__ == "__main__":
+    ejecutar_menu()
